@@ -10,36 +10,69 @@
 
   <div class="wrapper">
     <div class="card">
-      <div class="left">
-        <div class="header">
-          <div class="logo">QR</div>
-          <div class="title">
-            <h1>QR Code Generator</h1>
-            <p>Generate and download QR codes quickly</p>
+      <div class="tab-bar">
+        <button class="tab active" data-view="generate">Generate</button>
+        <button class="tab" data-view="scan">Scan</button>
+      </div>
+
+      <section class="view view-generate active">
+        <div class="left">
+          <div class="header">
+            <div class="logo">QR</div>
+            <div class="title">
+              <h1>QR Code Generator</h1>
+              <p>Generate and download QR codes quickly</p>
+            </div>
           </div>
+
+          <label class="field-label">Enter a URL or link</label>
+          <input id="urlInput" type="text" placeholder="https://example.com">
+
+          <div class="actions">
+            <button id="generateBtn" class="btn primary">Generate QR</button>
+            <button id="resetBtn" class="btn">Reset</button>
+          </div>
+
+          <p class="tip">Tip: paste a Google Sheet or file link to encode it.</p>
         </div>
 
-        <label class="field-label">Enter a URL or link</label>
-        <input id="urlInput" type="text" placeholder="https://example.com">
-
-        <div class="actions">
-          <button id="generateBtn" class="btn primary">Generate QR</button>
-          <button id="resetBtn" class="btn">Reset</button>
+        <div class="right">
+          <div class="preview-title">Preview</div>
+          <div class="preview" id="preview">
+            <span class="placeholder">Your generated QR will appear here.</span>
+          </div>
+          <a id="downloadLink" class="download" href="#" download="qrcode.png" hidden>Download</a>
         </div>
+      </section>
 
-        <p class="tip">Tip: paste a Google Sheet or file link to encode it.</p>
-      </div>
+      <section class="view view-scan">
+        <div class="scan-panel">
+          <div class="header">
+            <div class="logo">QR</div>
+            <div class="title">
+              <h1>QR Code Scanner</h1>
+              <p>Use your camera to detect QR codes.</p>
+            </div>
+          </div>
 
-      <div class="right">
-        <div class="preview-title">Preview</div>
-        <div class="preview" id="preview">
-          <span class="placeholder">Your generated QR will appear here.</span>
+          <div class="scan-area">
+            <video id="scannerVideo" muted playsinline autoplay></video>
+            <div class="scan-overlay"></div>
+          </div>
+
+          <div class="scan-controls">
+            <button id="startScanBtn" class="btn primary">Start camera</button>
+            <button id="stopScanBtn" class="btn" disabled>Stop camera</button>
+          </div>
+
+          <div class="scan-status" id="scanResult">Point your camera at a QR code to scan it.</div>
+          <p class="tip">The scanner uses the browser's barcode detection API. It works best on HTTPS or localhost.</p>
         </div>
-        <a id="downloadLink" class="download" href="#" download="qrcode.png" hidden>Download</a>
-      </div>
+      </section>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

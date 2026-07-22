@@ -23,6 +23,7 @@ body{
 .wrapper{width:100%;max-width:1100px}
 .card{
   display:flex;
+  flex-direction:column;
   gap:28px;
   background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border-radius:12px;
@@ -30,8 +31,8 @@ body{
   box-shadow:0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
-.left{flex:1;min-width:320px}
-.right{width:360px;display:flex;flex-direction:column;align-items:stretch}
+.left{flex:1;min-width:0}
+.right{width:360px;display:flex;flex-direction:column;align-items:stretch;min-width:0}
 
 .header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
 .logo{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;background:linear-gradient(135deg,var(--accent1),var(--accent2));box-shadow:0 6px 20px rgba(123,97,255,0.16)}
@@ -86,35 +87,106 @@ input::placeholder{color:rgba(199,217,255,0.18)}
 .download:focus-visible{box-shadow:0 0 0 6px rgba(123,97,255,0.12)}
 .download[hidden]{display:none}
 
-@media(max-width:880px){
-  .card{flex-direction:column}
-  .right{width:100%}
-  .download{width:100%;display:block}
+.tab-bar{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
 }
+
+.tab{
+  flex:1;
+  min-width:120px;
+  border:none;
+  background:rgba(255,255,255,0.04);
+  color:#dbefff;
+  padding:12px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  transition:background .15s ease, color .15s ease, transform .15s ease;
+}
+
+.tab.active,
+.tab:hover{
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#fff;
+}
+
+.view{display:none}
+.view.active{display:block}
+
+.scan-panel{display:flex;flex-direction:column;gap:18px}
+.scan-area{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  background:#0b1a33;
+  min-height:300px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#scannerVideo{width:100%;height:100%;object-fit:cover;display:block}
+.scan-overlay{
+  position:absolute;
+  inset:0;
+  border:2px dashed rgba(255,255,255,0.18);
+  pointer-events:none;
+}
+
+.scan-controls{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.scan-controls .btn{flex:1;min-width:140px}
+.scan-status{
+  color:var(--muted);
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:12px;
+  padding:14px;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+}
+
 
 /* Target common small device widths */
 @media (max-width:414px) {
-  .card{padding:18px;gap:14px}
+  .card{padding:18px;gap:14px;flex-direction:column}
+  .right{width:100%}
+  .tab-bar{gap:6px}
+  .tab{min-width:100px;padding:10px 12px}
   .header{gap:12px}
   .logo{width:48px;height:48px}
   .title h1{font-size:16px}
   .title p{font-size:12px}
   input[type="text"]{padding:10px 12px}
+  .actions{flex-direction:column;gap:10px}
+  .actions > .btn{width:100%}
   .btn{padding:10px;border-radius:10px}
   .preview{min-height:170px;padding:12px}
   .preview img{width:160px;height:auto}
-  .download{padding:10px 12px}
-  .actions{gap:10px}
+  .download{width:100%;padding:10px 12px}
 }
 
 @media (max-width:360px) {
   body{padding:18px}
   .card{padding:14px;gap:12px}
+  .right{width:100%}
+  .tab-bar{gap:6px}
+  .tab{min-width:100px;padding:10px 12px}
   .logo{width:40px;height:40px}
   .title h1{font-size:15px}
   .title p{font-size:11px}
   input[type="text"]{padding:9px 10px;font-size:14px}
   .actions{flex-direction:column;gap:8px}
+  .actions > .btn{width:100%}
   .btn{width:100%;padding:10px}
   .preview{min-height:150px;padding:10px}
   .preview img{width:140px;height:auto}
