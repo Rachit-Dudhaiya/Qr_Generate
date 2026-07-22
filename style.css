@@ -144,6 +144,17 @@ input::placeholder{color:rgba(199,217,255,0.18)}
 }
 
 .scan-controls .btn{flex:1;min-width:140px}
+
+.scan-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:10px;
+}
+
+.scan-actions .btn{
+  min-width:140px;
+}
+
 .scan-status{
   color:var(--muted);
   background:rgba(255,255,255,0.03);

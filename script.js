@@ -56,6 +56,7 @@ const startScanBtn = document.getElementById('startScanBtn');
 const stopScanBtn = document.getElementById('stopScanBtn');
 const scannerVideo = document.getElementById('scannerVideo');
 const scanResult = document.getElementById('scanResult');
+const openLinkBtn = document.getElementById('openLinkBtn');
 
 const scanCanvas = document.createElement('canvas');
 const scanContext = scanCanvas.getContext('2d');
@@ -88,6 +89,7 @@ async function initScanner(){
     scanning = true;
     startScanBtn.disabled = true;
     stopScanBtn.disabled = false;
+    openLinkBtn.hidden = true;
 
     if(hasBarcodeDetector){
       const supportedFormats = await BarcodeDetector.getSupportedFormats();
@@ -125,6 +127,46 @@ function scanVideoFrame(){
   return scanContext.getImageData(0, 0, scanCanvas.width, scanCanvas.height);
 }
 
+let lastScannedText = null;
+
+function normalizeUrl(text){
+  const input = (text || '').trim();
+  if(!input) return null;
+
+  try{
+    const url = new URL(input);
+    if(url.protocol === 'http:' || url.protocol === 'https:'){
+      return url.href;
+    }
+  }catch(_){
+    if(/^[\w-]+(\.[\w-]+)+/.test(input)){
+      return 'https://' + input;
+    }
+  }
+  return null;
+}
+
+function vibrateOnSuccess(){
+  if(navigator.vibrate){
+    navigator.vibrate(150);
+  }
+}
+
+function setScanResult(text){
+  if(text === lastScannedText) return;
+  lastScannedText = text;
+  scanResult.textContent = text;
+  const url = normalizeUrl(text);
+  if(url){
+    openLinkBtn.hidden = false;
+    openLinkBtn.dataset.url = url;
+  } else {
+    openLinkBtn.hidden = true;
+    delete openLinkBtn.dataset.url;
+  }
+  vibrateOnSuccess();
+}
+
 async function scanLoop(){
   if(!scanning) return;
 
@@ -132,19 +174,20 @@ async function scanLoop(){
     if(barcodeDetector){
       const result = await barcodeDetector.detect(scannerVideo);
       if(result.length){
-        scanResult.textContent = result[0].rawValue || 'QR code detected';
+        setScanResult(result[0].rawValue || 'QR code detected');
       }
     } else {
       const imageData = scanVideoFrame();
       if(imageData){
         const qr = jsQR(imageData.data, imageData.width, imageData.height);
         if(qr){
-          scanResult.textContent = qr.data;
+          setScanResult(qr.data);
         }
       }
     }
   }catch(err){
     scanResult.textContent = 'Scan failed: ' + (err.message || err.name);
+    openLinkBtn.hidden = true;
   }
 
   if(scanning){
@@ -154,6 +197,12 @@ async function scanLoop(){
 
 startScanBtn.addEventListener('click', initScanner);
 stopScanBtn.addEventListener('click', stopScanner);
+openLinkBtn.addEventListener('click', ()=>{
+  const url = openLinkBtn.dataset.url;
+  if(url){
+    window.open(url, '_blank');
+  }
+});
 
 urlInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') generateQR(); });
 

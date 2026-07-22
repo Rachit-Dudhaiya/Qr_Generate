@@ -66,7 +66,10 @@
           </div>
 
           <div class="scan-status" id="scanResult">Point your camera at a QR code to scan it.</div>
-          <p class="tip">The scanner uses the browser's barcode detection API. It works best on HTTPS or localhost.</p>
+          <div class="scan-actions">
+            <button id="openLinkBtn" class="btn" hidden>Open link</button>
+          </div>
+          <p class="tip">The scanner uses the browser's camera and QR decoder. It works best on HTTPS or localhost.</p>
         </div>
       </section>
     </div>
