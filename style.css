@@ -117,7 +117,7 @@ input::placeholder{color:rgba(199,217,255,0.18)}
 .view{display:none}
 .view.active{display:block}
 
-.scan-panel{display:flex;flex-direction:column;gap:18px}
+.scan-panel{display:flex;flex-direction:column;gap:18px;margin-top:18px}
 .scan-area{
   position:relative;
   border-radius:14px;
@@ -184,6 +184,9 @@ input::placeholder{color:rgba(199,217,255,0.18)}
   .preview{min-height:170px;padding:12px}
   .preview img{width:160px;height:auto}
   .download{width:100%;padding:10px 12px}
+  .scan-area{min-height:220px}
+  .scan-controls .btn, .scan-actions .btn{width:100%;min-width:auto}
+  .scan-status{padding:12px}
 }
 
 @media (max-width:360px) {
@@ -202,6 +205,9 @@ input::placeholder{color:rgba(199,217,255,0.18)}
   .preview{min-height:150px;padding:10px}
   .preview img{width:140px;height:auto}
   .download{width:100%;padding:10px}
+  .scan-area{min-height:200px}
+  .scan-controls .btn, .scan-actions .btn{width:100%;min-width:auto}
+  .scan-status{padding:12px}
 }
 
 /* Fluid scaling for screens >= 355px up to large desktops */
